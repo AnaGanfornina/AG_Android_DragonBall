@@ -2,6 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="bgColorOP">#92FFFFFF</color>
     <color name="primaryColor">#E76A24</color>
+    <color name="errorColor">#E91E4A</color>
+
 
 </resources>
