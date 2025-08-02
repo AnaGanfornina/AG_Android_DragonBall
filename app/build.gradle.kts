@@ -37,6 +37,9 @@ android {
 }
 
 dependencies {
+    implementation(libs.okhttp)
+    implementation(libs.kotlinx.serialization.runtime)
+    implementation(libs.kotlinx.coroutines.android)
     implementation(libs.gson)
     implementation(libs.koin.android)
     implementation(libs.androidx.core.ktx)

@@ -3,6 +3,8 @@ package com.keepcoding.agdragonball.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.keepcoding.agdragonball.domain.User
+import com.keepcoding.agdragonball.domain.interfaces.UserRepositoryInterface
+import com.keepcoding.agdragonball.domain.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -10,7 +12,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MainViewModel(
-    private val userRepository: UserRepository,
+    private val userRepository: UserRepositoryInterface,
 ): ViewModel() {
 
     // El vm se comunica con la Activity mediante un stateFlow
@@ -18,7 +20,7 @@ class MainViewModel(
     sealed class MainState{
         data object Idle: MainState()
         data object LoginSuccessful: MainState()
-        data class HeroDownloaded(var heroes: List<Hero>): MainState()
+        //data class HeroDownloaded(var heroes: List<Hero>): MainState()
         data class Error(val message: String): MainState()
         data object Loading: MainState()
     }
@@ -32,18 +34,20 @@ class MainViewModel(
                 MainState.Loading
             }
             val response = userRepository.performLoginRequest(User(usuario, pass))
-            /*
+
             when (response) {
-                is UserRepository.LoginResponse.Success -> {
-                    downloadHeros(response.token)
+                is UserRepositoryInterface.LoginResponse.Success -> {
+                    _mainState.update {
+                        MainState.LoginSuccessful
+                    }
                 }
-                is UserRepository.LoginResponse.Error -> {
+                is UserRepositoryInterface.LoginResponse.Error -> {
                     _mainState.update {
                         MainState.Error(response.message)
                     }
                 }
             }
-            */
+
         }
     }
 }
