@@ -33,10 +33,12 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    viewBinding.enable = true
 }
 
 dependencies {
-
+    implementation(libs.gson)
+    implementation(libs.koin.android)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
