@@ -37,11 +37,10 @@ android {
 }
 
 dependencies {
+    implementation(libs.koin.android)
     implementation(libs.okhttp)
-    implementation(libs.kotlinx.serialization.runtime)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.gson)
-    implementation(libs.koin.android)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

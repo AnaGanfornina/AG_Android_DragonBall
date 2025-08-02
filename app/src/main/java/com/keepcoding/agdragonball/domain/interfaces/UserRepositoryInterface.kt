@@ -1,6 +1,6 @@
 package com.keepcoding.agdragonball.domain.interfaces
 
-import com.keepcoding.agdragonball.domain.User
+import com.keepcoding.agdragonball.domain.entities.User
 
 interface UserRepositoryInterface {
 
@@ -9,7 +9,7 @@ interface UserRepositoryInterface {
         data class Error(val message: String, val code: Int) : LoginResponse()
     }
 
-    suspend fun performLoginRequest(user: User): LoginResponse
+    suspend fun performLoginRequest(user: String, pass: String): LoginResponse
 
 
 }

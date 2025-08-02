@@ -1,15 +1,20 @@
-package com.keepcoding.agdragonball.login
+package com.keepcoding.agdragonball.ui.login
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.doAfterTextChanged
+import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
 import com.keepcoding.agdragonball.databinding.ActivityMainBinding
-import com.keepcoding.agdragonball.domain.User
+import com.keepcoding.agdragonball.domain.entities.User
+import com.keepcoding.agdragonball.ui.home.HomeActivity
+import com.keepcoding.agdragonball.ui.login.MainViewModel.MainState
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -30,6 +35,13 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        setListeners()
+        setObservers()
+
+    }
+
+    fun setListeners() {
+
         val user = cargarReferences()
 
         with(binding){
@@ -38,6 +50,7 @@ class MainActivity : AppCompatActivity() {
 
             bLogin.setOnClickListener {
                 onLoginClicker()
+
             }
 
 
@@ -53,6 +66,31 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun setObservers() {
+        lifecycleScope.launch {
+            viewModel.mainState.collect { stade ->
+                when(stade) {
+                    is MainState.Idle -> {
+
+                    }
+                    is MainState.Loading -> {
+                        // todo: progres barr
+                    }
+                    is MainState.LoginSuccessful -> {
+                        // lanzar la siguiente activity
+                        val token = stade.token
+                        setToken(token)
+                        HomeActivity.startActivity(this@MainActivity,token)
+                    }
+
+                    is MainState.Error -> TODO()
+                }
+            }
+        }
+        }
+
+
+
     private fun setButtonState(){
         with(binding) {
             bLogin.isEnabled = etPassword.text.toString().isNotBlank() && etUser.text.toString().isNotBlank()
@@ -67,10 +105,30 @@ class MainActivity : AppCompatActivity() {
                 guardarEnSharePreferences(User())
             }
 
+            viewModel.performLogin("a@gmail.com", "abcdef")
+            //viewModel.performLogin(user.name, user.password)
+
+
+
         }
-        //ListActivity.startActivity(this)
+
+
+
 
     }
+
+    private fun setToken(token:String){
+        getSharedPreferences("MainActivity", MODE_PRIVATE).edit {
+            putString("token", token)
+        }
+    }
+    private fun getToken(): String{
+        val token = getSharedPreferences("MainActivity", MODE_PRIVATE).getString(
+            "token",""
+        ).orEmpty()
+        return token
+    }
+
 
     private fun guardarEnSharePreferences(user: User){
         getSharedPreferences("MainActivity", MODE_PRIVATE).edit {

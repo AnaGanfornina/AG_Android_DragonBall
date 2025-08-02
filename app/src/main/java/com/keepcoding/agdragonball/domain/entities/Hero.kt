@@ -1,4 +1,4 @@
-package com.keepcoding.agdragonball.domain
+package com.keepcoding.agdragonball.domain.entities
 
 data class Hero(
     val id: String,

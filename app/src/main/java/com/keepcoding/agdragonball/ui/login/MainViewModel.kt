@@ -1,10 +1,10 @@
-package com.keepcoding.agdragonball.login
+package com.keepcoding.agdragonball.ui.login
 
+import android.media.session.MediaSession.Token
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.keepcoding.agdragonball.domain.User
+import com.keepcoding.agdragonball.domain.entities.User
 import com.keepcoding.agdragonball.domain.interfaces.UserRepositoryInterface
-import com.keepcoding.agdragonball.domain.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,7 +19,7 @@ class MainViewModel(
 
     sealed class MainState{
         data object Idle: MainState()
-        data object LoginSuccessful: MainState()
+        data class LoginSuccessful(val token: String): MainState()
         //data class HeroDownloaded(var heroes: List<Hero>): MainState()
         data class Error(val message: String): MainState()
         data object Loading: MainState()
@@ -33,12 +33,12 @@ class MainViewModel(
             _mainState.update {
                 MainState.Loading
             }
-            val response = userRepository.performLoginRequest(User(usuario, pass))
+            val response = userRepository.performLoginRequest(usuario, pass)
 
             when (response) {
                 is UserRepositoryInterface.LoginResponse.Success -> {
                     _mainState.update {
-                        MainState.LoginSuccessful
+                        MainState.LoginSuccessful(response.token)
                     }
                 }
                 is UserRepositoryInterface.LoginResponse.Error -> {

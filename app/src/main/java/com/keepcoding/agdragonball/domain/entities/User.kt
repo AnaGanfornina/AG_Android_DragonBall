@@ -1,4 +1,4 @@
-package com.keepcoding.agdragonball.domain
+package com.keepcoding.agdragonball.domain.entities
 
 import com.google.gson.Gson
 
