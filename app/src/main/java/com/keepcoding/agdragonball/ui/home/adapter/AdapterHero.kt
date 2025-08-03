@@ -27,19 +27,32 @@ class AdapterHero(
 
             with(binding){
                 tvHero.text = hero.name
-                Glide.with(binding.shapeableImageView.context)
-                    .load(hero.foto)
-                    .centerCrop()
-                    .into(binding.shapeableImageView)
+                if( hero.isAlive()){
+                    Glide.with(binding.shapeableImageView.context)
+                        .load(hero.foto)
+                        .centerCrop()
+                        .into(binding.shapeableImageView)
+                    progresBarVida.progress = hero.life
+                    root.alpha = 1.0f
+                    root.isClickable = true
+                }else{
+                    Glide.with(shapeableImageView.context)
+                        .load(hero.foto)
+                        .centerCrop()
+                        .into(shapeableImageView)
+                    root.alpha = 0.5f
+                    root.isClickable = false
+                    progresBarVida.progress = hero.life
 
+                }
             }
 
-
-
-
-
-            binding.root.setOnClickListener {
-                onItemClicked(hero)
+            if (hero.isAlive()) {
+                binding.root.setOnClickListener {
+                    onItemClicked(hero)
+                }
+            } else {
+                binding.root.setOnClickListener(null)
             }
 
 
