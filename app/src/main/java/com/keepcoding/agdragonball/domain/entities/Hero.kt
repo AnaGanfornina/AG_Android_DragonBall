@@ -15,6 +15,7 @@ data class Hero(
         if(this.isAlive()){
             this.life + 10
         }
+
     }
     fun fight(){
         if(this.isAlive()){

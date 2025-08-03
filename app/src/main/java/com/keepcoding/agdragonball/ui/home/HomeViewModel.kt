@@ -25,6 +25,7 @@ class HomeViewModel(
         data object Loading: HomeState()
     }
 
+
     private var currentHeroes: MutableList<Hero> = mutableListOf()
 
 
@@ -69,22 +70,57 @@ class HomeViewModel(
     }
 
     fun healHero() {
-        _selectedHero.value?.let { hero ->
 
-            val updatedHero = hero.copy(life = minOf(hero.life + 20, 100))
+        _selectedHero.value?.let { selected ->
+            val damage = (5..30).random()
+            val updatedHero = selected.copy(life = selected.life + 20)
+
+            // Actualizar selectedHero
             _selectedHero.value = updatedHero
 
-
+            // Actualizar lista de héroes
+            _homeState.value.let { state ->
+                if (state is HomeState.HeroDownloaded) {
+                    val updatedList = state.heroes.map { hero ->
+                        if (hero.id == updatedHero.id) updatedHero else hero
+                    }
+                    _homeState.value = HomeState.HeroDownloaded(updatedList)
+                }
+            }
         }
     }
+
+
+        /*
+        val updatedHero = hero.copy(life = minOf(hero.life + 20, 100))
+        _selectedHero.value = updatedHero
+
+        */
+
+
+
+
 
     fun punchHero() {
-        _selectedHero.value?.let { hero ->
-            val damage = (5..30).random() // Daño aleatorio entre 5 y 30
-            val updatedHero = hero.copy(life = maxOf(hero.life - damage, 0))
+        _selectedHero.value?.let { selected ->
+            val damage = (5..30).random()
+            val updatedHero = selected.copy(life = maxOf(selected.life - damage, 0))
+
+            // Actualizar selectedHero
             _selectedHero.value = updatedHero
+
+            // Actualizar lista de héroes
+            _homeState.value.let { state ->
+                if (state is HomeState.HeroDownloaded) {
+                    val updatedList = state.heroes.map { hero ->
+                        if (hero.id == updatedHero.id) updatedHero else hero
+                    }
+                    _homeState.value = HomeState.HeroDownloaded(updatedList)
+                }
+            }
         }
     }
+
 
     //Función para hacer logout
 
