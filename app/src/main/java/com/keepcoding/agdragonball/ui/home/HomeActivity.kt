@@ -3,6 +3,7 @@ package com.keepcoding.agdragonball.ui.home
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -14,9 +15,6 @@ import com.keepcoding.agdragonball.domain.entities.Hero
 import com.keepcoding.agdragonball.ui.home.adapter.AdapterHero
 import com.keepcoding.agdragonball.ui.home.fragments.FragmentHeroes
 
-interface OnItemClickListener{
-    fun onItemClick(texto: String)
-}
 
 
 class HomeActivity : AppCompatActivity() {
@@ -34,9 +32,6 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -48,41 +43,35 @@ class HomeActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        /*
-        setAdapter(lista) //le paso la lista inicial al adapter
-        setListeners() //escucho si alguien ha puslado el botón para añaidr nuevos elementos
 
-         */
-        binding.flList
+        intent.extras?.let {
+            val token = it.getString("token","sin token")
+            viewModel.downloadHeros(token)
+        }
+
+
+        // Creación del Fragment
+
+        val fragment = FragmentHeroes()
+        fragment.onItemClickListener = { name ->
+            // Aquí recibes el click y haces la acción, p.ej cambiar fragment
+            Toast.makeText(this, "Has pulsado: $name", Toast.LENGTH_SHORT).show()
+/*
+            // O navegar a otro fragmento:
+            supportFragmentManager.beginTransaction()
+                .replace(binding.flList.id,FragmetnDetail(name))
+                .addToBackStack(null)
+                .commit()
+
+ */
+        }
+
 
         supportFragmentManager.beginTransaction()
-            .replace(binding.flList.id,FragmentHeroes())
+            .replace(binding.flList.id,fragment)
             .commit()
 
     }
-
-
-    override fun onItemClick(texto: String) {
-        // Enviar info de celda pulsada
-    }
-
-
-    private fun setListeners(){
-
-        mainAdapter.actualizarDatos(lista)
-
-    }
-    private fun setAdapter(lista: List<String>){
-        with(binding.rvList) {
-            //binding.rvMain.layoutManager = LinearLayoutManager(this)
-            //binding.rvMain.adapter = AdapterMain()
-
-            layoutManager = LinearLayoutManager(this@HomeActivity)
-            adapter = mainAdapter
-            mainAdapter.actualizarDatos(lista)
-        }
-    }
-
 
 
 }

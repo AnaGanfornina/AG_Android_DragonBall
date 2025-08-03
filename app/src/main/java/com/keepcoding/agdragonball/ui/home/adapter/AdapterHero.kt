@@ -6,14 +6,15 @@ import android.widget.AdapterView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.keepcoding.agdragonball.databinding.ItemHeroCellBinding
+import com.keepcoding.agdragonball.domain.entities.Hero
 
 class AdapterHero(
-    private  val onItemClicked: AdapterView.OnItemClickListener
+    private val onItemClicked: (Hero) -> Unit
 ) : RecyclerView.Adapter<AdapterHero.HeroViewHolder>() {
 
-    private var lista: List<String> = emptyList()
+    private var lista: List<Hero> = emptyList()
 
-    fun actualizarDatos(nuevosElementos: List<String>){
+    fun actualizarDatos(nuevosElementos: List<Hero>){
         lista = nuevosElementos
         notifyDataSetChanged() // "fuerza" a actualizar la lista indicando que los
         // elementos han cambiado
@@ -21,17 +22,13 @@ class AdapterHero(
 
     // esto es qué estamos pintando, qué es ese elemento a pinar
     inner class HeroViewHolder(private val binding: ItemHeroCellBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(name: String) {
-            binding.tvHero.text= name
+        fun bind(hero: Hero) {
 
-
-            // Seleccion de celda
             binding.root.setOnClickListener {
-                //Cuando pulsen en este elemento haz algo
-                Toast.makeText(binding.root.context,name, Toast.LENGTH_LONG).show()
-
-                //onItemClicked.onItemClick(elementoAPintar)
+                onItemClicked(hero)
             }
+
+
         }
     }
 

@@ -4,15 +4,29 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.keepcoding.agdragonball.databinding.FragmentHeroListBinding
+import com.keepcoding.agdragonball.domain.entities.Hero
 import com.keepcoding.agdragonball.ui.home.HomeViewModel
+import com.keepcoding.agdragonball.ui.home.adapter.AdapterHero
+import kotlinx.coroutines.launch
 
-class FragmentHeroes: Fragment() {
+
+class FragmentHeroes: Fragment()  {
+
+    private lateinit var heroAdapter: AdapterHero
     private lateinit var binding: FragmentHeroListBinding
     // accedemos al vm compartido
     private val viewModel: HomeViewModel by activityViewModels()
+
+    // Lambda para comunicar a la Activity
+    var onItemClickListener: (Hero) -> Unit = {}
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,16 +40,47 @@ class FragmentHeroes: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         //Cuando ya esté creada la vista, que va a hacer ?
         super.onViewCreated(view, savedInstanceState)
-        /*
-        hacer cuando pulsemos un botón del adapter
-        binding.root.setOnClickListener{
-            onClick()
+
+        heroAdapter = AdapterHero { hero ->
+            // Cuando el adapter detecta click, notificamos a la activity
+            onItemClickListener(hero)
+        }
+        binding.rvList.adapter = heroAdapter // le decimos al recycler view que use el heroAadapter
+        binding.rvList.layoutManager = LinearLayoutManager(requireContext())
+
+        //observamos los datos de la lista del vm
+        lifecycleScope.launch {
+            viewModel.heroList.collect { listaActualizada ->
+
+                heroAdapter.actualizarDatos(listaActualizada)
+            }
         }
 
-         */
+
+
+        //setObservers()
+        //setListeners()
 
 
     }
+/*
+    fun setListeners() {
+        binding.root.setOnClickListener {
+            val lista  = viewModel.downloadHeros()
+            heroAdapter.actualizarDatos(lista)
+        }
+    }
+*/
+    fun setObservers() {
+        lifecycleScope.launch { // corrutina del ciclo de vida
+            viewModel.heroList.collect { heroes ->
+
+                heroAdapter.actualizarDatos(heroes)
+
+            }
+        }
+    }
+
 
 
 }
