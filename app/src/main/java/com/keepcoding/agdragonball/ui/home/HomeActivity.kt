@@ -71,6 +71,7 @@ class HomeActivity : AppCompatActivity() {
 
         supportFragmentManager.beginTransaction()
             .replace(binding.flList.id,fragment)
+            .addToBackStack(null)
             .commit()
 
     }

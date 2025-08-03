@@ -61,6 +61,7 @@ class FragmentHeroDetail: Fragment()  {
 
 
 
+
     }
 
     fun setObservers() {

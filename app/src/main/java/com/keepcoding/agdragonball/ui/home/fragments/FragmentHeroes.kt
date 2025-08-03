@@ -15,6 +15,7 @@ import com.keepcoding.agdragonball.ui.home.adapter.AdapterHero
 import kotlinx.coroutines.launch
 
 
+
 class FragmentHeroes: Fragment()  {
 
     private lateinit var heroAdapter: AdapterHero
@@ -49,17 +50,22 @@ class FragmentHeroes: Fragment()  {
 
 
         setObservers()
-        //setListeners()
+        setListeners()
 
     }
-/*
+
     fun setListeners() {
-        binding.root.setOnClickListener {
-            val lista  = viewModel.downloadHeros()
-            heroAdapter.actualizarDatos(lista)
+        lifecycleScope.launch {
+            viewModel.selectedHero.collect { hero ->
+                if (hero != null && !hero.isAlive()) {
+                    //findNavController().popBackStack() Inserar aqui el metodo para volver a atras automaticamente
+
+                }
+            }
         }
     }
-*/
+
+
     fun setObservers() {
 
     //observamos los datos de la lista del vm
