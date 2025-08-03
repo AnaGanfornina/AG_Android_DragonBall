@@ -13,6 +13,7 @@ import com.keepcoding.agdragonball.databinding.ActivityHomeBinding
 import com.keepcoding.agdragonball.databinding.ActivityMainBinding
 import com.keepcoding.agdragonball.domain.entities.Hero
 import com.keepcoding.agdragonball.ui.home.adapter.AdapterHero
+import com.keepcoding.agdragonball.ui.home.fragments.FragmentHeroDetail
 import com.keepcoding.agdragonball.ui.home.fragments.FragmentHeroes
 
 
@@ -53,17 +54,18 @@ class HomeActivity : AppCompatActivity() {
         // Creación del Fragment
 
         val fragment = FragmentHeroes()
-        fragment.onItemClickListener = { name ->
-            // Aquí recibes el click y haces la acción, p.ej cambiar fragment
-            Toast.makeText(this, "Has pulsado: $name", Toast.LENGTH_SHORT).show()
-/*
-            // O navegar a otro fragmento:
+        fragment.onItemClickListener = { hero ->
+            // Recibimos el click
+            Toast.makeText(this, "Has pulsado: ${hero.name}", Toast.LENGTH_SHORT).show()
+            viewModel.selectHero(hero)
+
+            //Navegamos a otro fragment
             supportFragmentManager.beginTransaction()
-                .replace(binding.flList.id,FragmetnDetail(name))
+                .replace(binding.flList.id,FragmentHeroDetail())
                 .addToBackStack(null)
                 .commit()
 
- */
+
         }
 
 

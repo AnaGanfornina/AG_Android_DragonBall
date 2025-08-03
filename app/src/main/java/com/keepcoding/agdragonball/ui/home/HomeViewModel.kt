@@ -25,10 +25,22 @@ class HomeViewModel(
         data object Loading: HomeState()
     }
 
+    private var currentHeroes: MutableList<Hero> = mutableListOf()
+
+
     private val _homeState = MutableStateFlow<HomeState>(HomeState.Idle)
     val homeState: StateFlow<HomeState> = _homeState
 
+    private val _selectedHero = MutableStateFlow<Hero?>(null)
+    val selectedHero: StateFlow<Hero?> = _selectedHero
 
+    fun selectHero(hero: Hero) {
+
+        _selectedHero.value = hero
+
+
+
+    }
 
     //Función para pasarle los heroes
 
@@ -40,9 +52,10 @@ class HomeViewModel(
                 is HeroRepositoryInterface.DownloadHeroesResponse.Success -> {
 
                     //actualizamos el estado
+                    currentHeroes = response.heroes.toMutableList()
 
                     _homeState.update {
-                        HomeState.HeroDownloaded(response.heroes)
+                        HomeState.HeroDownloaded(currentHeroes)
                     }
                 }
                 is HeroRepositoryInterface.DownloadHeroesResponse.Error -> {
@@ -52,6 +65,24 @@ class HomeViewModel(
                 }
 
             }
+        }
+    }
+
+    fun healHero() {
+        _selectedHero.value?.let { hero ->
+
+            val updatedHero = hero.copy(life = minOf(hero.life + 20, 100))
+            _selectedHero.value = updatedHero
+
+
+        }
+    }
+
+    fun punchHero() {
+        _selectedHero.value?.let { hero ->
+            val damage = (5..30).random() // Daño aleatorio entre 5 y 30
+            val updatedHero = hero.copy(life = maxOf(hero.life - damage, 0))
+            _selectedHero.value = updatedHero
         }
     }
 
