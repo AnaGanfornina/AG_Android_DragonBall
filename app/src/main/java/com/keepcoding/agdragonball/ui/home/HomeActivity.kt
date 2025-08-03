@@ -10,7 +10,14 @@ import androidx.core.view.WindowInsetsCompat
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.keepcoding.agdragonball.databinding.ActivityHomeBinding
 import com.keepcoding.agdragonball.databinding.ActivityMainBinding
+import com.keepcoding.agdragonball.domain.entities.Hero
+import com.keepcoding.agdragonball.ui.home.adapter.AdapterHero
 import com.keepcoding.agdragonball.ui.home.fragments.FragmentHeroes
+
+interface OnItemClickListener{
+    fun onItemClick(texto: String)
+}
+
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
@@ -27,6 +34,9 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -38,12 +48,41 @@ class HomeActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        /*
+        setAdapter(lista) //le paso la lista inicial al adapter
+        setListeners() //escucho si alguien ha puslado el botón para añaidr nuevos elementos
+
+         */
+        binding.flList
 
         supportFragmentManager.beginTransaction()
             .replace(binding.flList.id,FragmentHeroes())
             .commit()
 
+    }
 
+
+    override fun onItemClick(texto: String) {
+        // Enviar info de celda pulsada
+    }
+
+
+    private fun setListeners(){
+
+        mainAdapter.actualizarDatos(lista)
 
     }
+    private fun setAdapter(lista: List<String>){
+        with(binding.rvList) {
+            //binding.rvMain.layoutManager = LinearLayoutManager(this)
+            //binding.rvMain.adapter = AdapterMain()
+
+            layoutManager = LinearLayoutManager(this@HomeActivity)
+            adapter = mainAdapter
+            mainAdapter.actualizarDatos(lista)
+        }
+    }
+
+
+
 }
