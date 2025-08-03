@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.keepcoding.agdragonball.databinding.ItemHeroCellBinding
 import com.keepcoding.agdragonball.domain.entities.Hero
 
@@ -23,6 +24,19 @@ class AdapterHero(
     // esto es qué estamos pintando, qué es ese elemento a pinar
     inner class HeroViewHolder(private val binding: ItemHeroCellBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(hero: Hero) {
+
+            with(binding){
+                tvHero.text = hero.name
+                Glide.with(binding.shapeableImageView.context)
+                    .load(hero.foto)
+                    .centerCrop()
+                    .into(binding.shapeableImageView)
+
+            }
+
+
+
+
 
             binding.root.setOnClickListener {
                 onItemClicked(hero)

@@ -37,6 +37,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.glide)
     implementation(libs.koin.android)
     implementation(libs.okhttp)
     implementation(libs.kotlinx.coroutines.android)

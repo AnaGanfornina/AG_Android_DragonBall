@@ -48,17 +48,13 @@ class FragmentHeroes: Fragment()  {
         binding.rvList.adapter = heroAdapter // le decimos al recycler view que use el heroAadapter
         binding.rvList.layoutManager = LinearLayoutManager(requireContext())
 
-        //observamos los datos de la lista del vm
-        lifecycleScope.launch {
-            viewModel.heroList.collect { listaActualizada ->
-
-                heroAdapter.actualizarDatos(listaActualizada)
-            }
-        }
 
 
 
-        //setObservers()
+
+
+
+        setObservers()
         //setListeners()
 
 
@@ -72,14 +68,36 @@ class FragmentHeroes: Fragment()  {
     }
 */
     fun setObservers() {
-        lifecycleScope.launch { // corrutina del ciclo de vida
-            viewModel.heroList.collect { heroes ->
 
-                heroAdapter.actualizarDatos(heroes)
-
+    //observamos los datos de la lista del vm
+    lifecycleScope.launch {
+        viewModel.homeState.collect { state ->
+            when(state) {
+                is HomeViewModel.HomeState.Idle -> {
+                    //binding.progressBar.visibility = View.GONE
+                    //binding.tvError.visibility = View.GONE
+                }
+                is HomeViewModel.HomeState.Loading -> {
+                    //binding.progressBar.visibility = View.VISIBLE
+                    //binding.tvError.visibility = View.GONE
+                }
+                is HomeViewModel.HomeState.HeroDownloaded -> {
+                    //binding.progressBar.visibility = View.GONE
+                    //binding.tvError.visibility = View.GONE
+                    heroAdapter.actualizarDatos(state.heroes)
+                }
+                is HomeViewModel.HomeState.Error -> {
+                   // binding.progressBar.visibility = View.GONE
+                   //binding.tvError.visibility = View.VISIBLE
+                    //binding.tvError.text = state.message
+                }
             }
         }
     }
+
+    }
+
+
 
 
 

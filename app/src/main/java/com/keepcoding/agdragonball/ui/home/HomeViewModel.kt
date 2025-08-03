@@ -28,20 +28,17 @@ class HomeViewModel(
     private val _homeState = MutableStateFlow<HomeState>(HomeState.Idle)
     val homeState: StateFlow<HomeState> = _homeState
 
-    // Lista de heroes
-    private val _heroList = MutableStateFlow<List<Hero>>(emptyList())
-    val heroList: StateFlow<List<Hero>> = _heroList
+
 
     //Función para pasarle los heroes
 
     fun downloadHeros(token: String) {
         viewModelScope.launch(Dispatchers.IO) {
+            _homeState.update { HomeState.Loading }
             val response = heroRepository.performDownloadHerosRequest(token)
             when (response) {
                 is HeroRepositoryInterface.DownloadHeroesResponse.Success -> {
-                    // guardamos los heroes en la lista
 
-                    _heroList.value = response.heroes
                     //actualizamos el estado
 
                     _homeState.update {
