@@ -10,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.keepcoding.agdragonball.databinding.ActivityHomeBinding
 import com.keepcoding.agdragonball.databinding.ActivityMainBinding
+import com.keepcoding.agdragonball.ui.home.fragments.FragmentHeroes
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
@@ -38,6 +39,11 @@ class HomeActivity : AppCompatActivity() {
             insets
         }
 
-        //todo:Aqui va el fragment
+        supportFragmentManager.beginTransaction()
+            .replace(binding.flList.id,FragmentHeroes())
+            .commit()
+
+
+
     }
 }

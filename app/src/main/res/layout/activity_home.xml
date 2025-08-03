@@ -8,4 +8,10 @@
     tools:context=".ui.home.HomeActivity"
     android:background="@color/primaryColor">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/flList"
+        android:background="#36E91E"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

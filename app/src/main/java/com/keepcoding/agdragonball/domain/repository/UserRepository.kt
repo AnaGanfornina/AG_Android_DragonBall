@@ -25,8 +25,7 @@ class UserRepository : UserRepositoryInterface{
 
         val response = client.newCall(request).execute() // se queda esperando a la rspuesta
         return if (response.isSuccessful) {
-            val token =
-                response.body!!.string()//no podemos leer la response.body dos veces, solo lo lee una vez //todo: quitar el forceunwrapt
+            val token = response.body?.string() ?: "" //no podemos leer la response.body dos veces, solo lo lee una vez //todo: quitar el forceunwrapt
             println("Token: $token")
             UserRepositoryInterface.LoginResponse.Success(token)
         } else {
