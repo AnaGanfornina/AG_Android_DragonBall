@@ -83,7 +83,13 @@ class MainActivity : AppCompatActivity() {
                         HomeActivity.startActivity(this@MainActivity,token)
                     }
 
-                    is MainState.Error -> TODO()
+                    is MainState.Error -> {
+                        binding.tvError.text = stade.message
+                        binding.tvError.visibility = View.VISIBLE
+                    }
+
+
+
                 }
             }
         }
@@ -106,15 +112,12 @@ class MainActivity : AppCompatActivity() {
             }
 
             //viewModel.performLogin("a@gmail.com", "abcdef")
+
             viewModel.performLogin(user.name, user.password)
 
 
 
         }
-
-
-
-
     }
 
     private fun setToken(token:String){

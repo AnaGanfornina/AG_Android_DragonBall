@@ -11,7 +11,7 @@ class App: Application() {
     override fun onCreate() {
         super.onCreate()
 
-        // Comentamos temporalmente todo esto
+
 
         startKoin{
             androidContext(this@App)

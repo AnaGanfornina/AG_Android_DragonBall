@@ -20,7 +20,6 @@ class MainViewModel(
     sealed class MainState{
         data object Idle: MainState()
         data class LoginSuccessful(val token: String): MainState()
-        //data class HeroDownloaded(var heroes: List<Hero>): MainState()
         data class Error(val message: String): MainState()
         data object Loading: MainState()
     }
