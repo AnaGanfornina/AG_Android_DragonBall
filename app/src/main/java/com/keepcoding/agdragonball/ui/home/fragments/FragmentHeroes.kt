@@ -20,6 +20,7 @@ class FragmentHeroes: Fragment()  {
 
     private lateinit var heroAdapter: AdapterHero
     private lateinit var binding: FragmentHeroListBinding
+
     // accedemos al vm compartido
     private val viewModel: HomeViewModel by activityViewModels()
 
@@ -57,10 +58,7 @@ class FragmentHeroes: Fragment()  {
     fun setListeners() {
         lifecycleScope.launch {
             viewModel.selectedHero.collect { hero ->
-                if (hero != null && !hero.isAlive()) {
-                    //findNavController().popBackStack() Inserar aqui el metodo para volver a atras automaticamente
-
-                }
+               // Aqui va la función del vm de curar a todos
             }
         }
     }

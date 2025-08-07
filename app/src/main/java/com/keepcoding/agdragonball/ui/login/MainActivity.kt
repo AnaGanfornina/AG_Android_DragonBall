@@ -111,9 +111,9 @@ class MainActivity : AppCompatActivity() {
                 guardarEnSharePreferences(User())
             }
 
-            //viewModel.performLogin("a@gmail.com", "abcdef")
+            viewModel.performLogin("a@gmail.com", "abcdef")
 
-            viewModel.performLogin(user.name, user.password)
+            //viewModel.performLogin(user.name, user.password)
 
 
 

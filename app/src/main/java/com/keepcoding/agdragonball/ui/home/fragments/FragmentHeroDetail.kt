@@ -58,10 +58,6 @@ class FragmentHeroDetail: Fragment()  {
         binding.bPunch.setOnClickListener {
             viewModel.punchHero()
         }
-
-
-
-
     }
 
     fun setObservers() {
@@ -75,10 +71,10 @@ class FragmentHeroDetail: Fragment()  {
                     .centerCrop()
                     .into(binding.imageHero)
 
-
-
-
                 binding.detailProgresBarVida.progress = hero.life
+                if (!hero.isAlive()){
+                    parentFragmentManager.popBackStack()
+                }
             }
 
         }

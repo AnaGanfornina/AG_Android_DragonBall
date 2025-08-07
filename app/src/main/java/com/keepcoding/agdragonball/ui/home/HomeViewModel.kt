@@ -38,9 +38,6 @@ class HomeViewModel(
     fun selectHero(hero: Hero) {
 
         _selectedHero.value = hero
-
-
-
     }
 
     //Función para pasarle los heroes
